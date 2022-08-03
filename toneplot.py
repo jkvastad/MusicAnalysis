@@ -1,4 +1,3 @@
-import math
 from collections import defaultdict
 from fractions import Fraction
 import matplotlib.pyplot as plt
@@ -6,25 +5,7 @@ from math import lcm
 from math import gcd
 from itertools import combinations
 from matplotlib.patches import Rectangle
-
-C_4 = 261.6256
-TWELVE_TET_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-
-
-def get_closest_scientific_pitch(fraction):
-    fraction_as_pitch = fraction * C_4
-    smallest_diff = 100000
-    name_number = '-'
-    for n in range(-48, 60):
-        scientific_pitch = C_4 * 2 ** (n / 12)
-        current_diff = abs(fraction_as_pitch - scientific_pitch)
-        if current_diff < smallest_diff:
-            smallest_diff = current_diff
-            name_number = n
-    pitch_name = TWELVE_TET_NAMES[name_number % 12] + f'{4 + name_number // 12}'
-    closest_pitch = C_4 * 2 ** (name_number / 12)
-    return fraction, pitch_name, 1200 * math.log2(
-        fraction_as_pitch / closest_pitch), smallest_diff / closest_pitch, smallest_diff
+from mautils import get_closest_scientific_pitch
 
 
 def get_lcm_for_fractions(*fractions: Fraction):
@@ -226,63 +207,6 @@ def plot_wavelength_multiples_for_fractions(ax, fractions, lcm_plot, title, labe
     ax.set_ylabel('Original Wavelength')
     ax.margins(0)
     ax.set_title(title)
-
-
-def temp():
-    A_sharp_6_major = {Fraction(7), Fraction(7 * 5, 4), Fraction(7 * 3, 2)}
-    C_4_major = {Fraction(1), Fraction(5, 4), Fraction(3, 2)}
-    C_5_major = {Fraction(2), Fraction(2 * 5, 4), Fraction(2 * 3, 2)}
-    C_6_major = {Fraction(4), Fraction(4 * 5, 4), Fraction(4 * 3, 2)}
-    C_4_minor = {Fraction(1), Fraction(6, 5), Fraction(3, 2)}
-    C_sharp_4_major = {Fraction(16, 15), Fraction(16 * 5, 15 * 4), Fraction(16 * 3, 15 * 2)}
-    D_4_major = {Fraction(9, 8), Fraction(9 * 5, 8 * 4), Fraction(9 * 3, 8 * 2)}
-    E_6_major = {Fraction(5), Fraction(5 * 5, 4), Fraction(5 * 3, 2)}
-    F_4_major = {Fraction(4, 3), Fraction(4 * 5, 3 * 4), Fraction(4 * 3, 3 * 2)}
-    F_3_major = {Fraction(2, 3), Fraction(2 * 5, 3 * 4), Fraction(2 * 3, 3 * 2)}
-    G_4_major = {Fraction(3, 2), Fraction(15, 8), Fraction(9, 4)}
-    G_5_major = {Fraction(3), Fraction(3 * 5, 4), Fraction(3 * 3, 2)}
-    G_6_major = {Fraction(6), Fraction(6 * 5, 4), Fraction(6 * 3, 2)}
-    Bb_4_major = {Fraction(7, 4), Fraction(7 * 5, 4 * 4), Fraction(7 * 3, 4 * 2)}
-    Bb_6_major = {Fraction(7, 1), Fraction(7 * 5, 1 * 4), Fraction(7 * 3, 1 * 2)}
-
-    my_fractions = [C_4_major, C_4_major | C_5_major, C_4_major | C_6_major]
-    """
-    my_fractions = [
-        # C_4_major,
-        # C_4_major | C_5_major,
-        C_4_major | C_5_major | G_5_major,
-        # C_4_major | C_5_major | G_5_major | C_6_major,
-        # C_4_major | C_5_major | G_5_major | C_6_major | E_6_major,
-        # C_4_major | C_5_major | G_5_major | C_6_major | E_6_major | G_6_major,
-        # C_4_major | C_5_major | G_5_major | C_6_major | E_6_major | G_6_major | A_sharp_6_major
-    ]
-
-    my_inverted_fractions = [{Fraction(fraction.denominator, fraction.numerator) for fraction in fractions} for
-                             fractions in my_fractions]
-    """
-    # plot_wavelength_multiples_for_fraction_sets(my_fractions)
-    max_harmonic = 14
-    my_fractions = [
-        # get_overtones_for_fractions(19, Fraction(1)),
-        # get_overtones_for_fractions(8, Fraction(1)),
-        get_overtones_for_fractions(8, Fraction(1)) | get_overtones_for_fractions(11, Fraction(2, 3)),
-        get_overtones_for_fractions(11, Fraction(1)) | get_overtones_for_fractions(8, Fraction(3, 2)),
-
-        # get_overtones_for_fractions(5, Fraction(1)) | get_overtones_for_fractions(8, Fraction(1, 2)),
-        # get_overtones_for_fractions(8, Fraction(1)) | get_overtones_for_fractions(3, Fraction(3, 2)),
-        # get_overtones_for_fractions(11, Fraction(1)) | get_overtones_for_fractions(9, Fraction(6, 5)),
-        # get_overtones_for_fractions(8, Fraction(1)) | get_overtones_for_fractions(8, Fraction(2, 3)),
-        # get_overtones_for_fractions(5, Fraction(1)) | get_overtones_for_fractions(6, Fraction(3, 4)),
-
-        # get_overtones_for_fractions(max_harmonic, Fraction(1), Fraction(3, 2)),
-        # get_overtones_for_fractions(max_harmonic, Fraction(1), Fraction(3)),
-        # get_overtones_for_fractions(max_harmonic, Fraction(1), Fraction(3, 2), Fraction(3)),
-        # get_overtones_for_fractions(15, Fraction(1)) | get_overtones_for_fractions(6, Fraction(3))
-    ]
-    for fractions in my_fractions:
-        plot_wavelength_multiples_for_fraction_sets([fractions], label_style='lcm')
-        plot_wavelength_multiples_for_fraction_sets([fractions], plot_style='compact')
-        # plot_wavelength_multiples_for_fraction_sets(my_inverted_fractions, lcm_plot=True)
 
 
 def plot_rectangles(ax, *rectangles: Rectangle):
