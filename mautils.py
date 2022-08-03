@@ -1,5 +1,6 @@
 import math
 
+
 def get_closest_scientific_pitch(fraction):
     c_4 = 261.6256
     twelve_tet_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']

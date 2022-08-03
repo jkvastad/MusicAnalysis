@@ -301,7 +301,6 @@ def print_wavelengths_for_harmonics(fraction: Fraction, harmonics: int, max_wave
 
 
 if __name__ == '__main__':
-
     my_harmonics_max = 20
     my_view_max = 18
 
