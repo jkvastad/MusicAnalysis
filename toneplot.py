@@ -90,6 +90,7 @@ def get_extended_octave_pair(fraction, octaves):
 
 
 def plot_notes_with_dissonance_less_than(max_dissonance):
+    # TODO: add label and color descriptions
     # noinspection PyTypeChecker
     fig, axs = plt.subplots(1, 2, sharey=True)
     ratios = get_unique_notes_with_dissonance_less_than(max_dissonance)
@@ -300,29 +301,23 @@ def print_wavelengths_for_harmonics(fraction: Fraction, harmonics: int, max_wave
     print()
 
 
+def plot_undertone_distribution(undertone_max=16, overtone_max=32, view_threshold=2):
+    fig, ax = plt.subplots(1, 1)
+    my_tones = defaultdict(int)
+    for overtone in range(1, overtone_max + 1):
+        for undertone in range(1, undertone_max + 1):
+            tone = Fraction(overtone, undertone)
+            my_tones[tone] += 1
+    plt.plot(my_tones.keys(), my_tones.values(), marker='.', linestyle='')
+    x_ticks = []
+
+    for x, y in my_tones.items():
+        if y >= view_threshold:
+            x_ticks.append(x)
+    ax.set_xticks(x_ticks, x_ticks)
+    ax.set_xlim(0, 2)
+    plt.show()
+
+
 if __name__ == '__main__':
-    my_harmonics_max = 20
-    my_view_max = 18
-
-    my_chord = [Fraction(1), Fraction(5, 2)]
-    plot_undertones(my_chord, [my_harmonics_max] * len(my_chord), my_view_max)
-
-    my_chord = [Fraction(1), Fraction(5, 4)]
-    plot_undertones(my_chord, [my_harmonics_max] * len(my_chord), my_view_max)
-
-    my_chord = [Fraction(1), Fraction(5, 3)]
-    plot_undertones(my_chord, [my_harmonics_max] * len(my_chord), my_view_max)
-
-    my_chord = [Fraction(1), Fraction(9, 5)]
-    plot_undertones(my_chord, [my_harmonics_max] * len(my_chord), my_view_max)
-
-    my_chord = [Fraction(1), Fraction(9, 7)]
-    plot_undertones(my_chord, [my_harmonics_max] * len(my_chord), my_view_max)
-
-    my_chord = [Fraction(1), Fraction(9, 8)]
-    plot_undertones(my_chord, [my_harmonics_max] * len(my_chord), my_view_max)
-
-    for my_fraction in my_chord[1:]:
-        print_wavelengths_for_harmonics(my_fraction, my_view_max, my_view_max)
-
     plt.show()
