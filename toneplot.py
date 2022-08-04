@@ -301,7 +301,7 @@ def print_wavelengths_for_harmonics(fraction: Fraction, harmonics: int, max_wave
     print()
 
 
-def plot_undertone_distribution(undertone_max=16, overtone_max=32, view_threshold=2):
+def plot_undertone_distribution(undertone_max=16, overtone_max=32, view_threshold=2, view_notes=False):
     fig, ax = plt.subplots(1, 1)
     my_tones = defaultdict(int)
     for overtone in range(1, overtone_max + 1):
@@ -309,15 +309,22 @@ def plot_undertone_distribution(undertone_max=16, overtone_max=32, view_threshol
             tone = Fraction(overtone, undertone)
             my_tones[tone] += 1
     plt.plot(my_tones.keys(), my_tones.values(), marker='.', linestyle='')
-    x_ticks = []
 
+    x_ticks = []
     for x, y in my_tones.items():
         if y >= view_threshold:
             x_ticks.append(x)
-    ax.set_xticks(x_ticks, x_ticks)
+    x_tick_names = x_tick_locations = x_ticks
+
+    if view_notes:
+        x_tick_names = [get_closest_scientific_pitch(x)[1] for x in x_tick_names]
+
+    ax.set_xticks(x_tick_locations, x_tick_names)
     ax.set_xlim(0, 2)
-    plt.show()
+    ax.set_xlabel('Frequency')
+    ax.set_ylabel('Undertone overlap #')
 
 
 if __name__ == '__main__':
+    plot_undertone_distribution(undertone_max=8, overtone_max=8, view_threshold=2, view_notes=True)
     plt.show()
