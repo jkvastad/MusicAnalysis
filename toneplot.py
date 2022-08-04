@@ -5,6 +5,7 @@ from math import lcm
 from math import gcd
 from itertools import combinations
 from matplotlib.patches import Rectangle
+from matplotlib.widgets import Slider, Button
 from mautils import get_closest_scientific_pitch
 
 
@@ -301,30 +302,92 @@ def print_wavelengths_for_harmonics(fraction: Fraction, harmonics: int, max_wave
     print()
 
 
-def plot_undertone_distribution(undertone_max=16, overtone_max=32, view_threshold=2, view_notes=False):
-    fig, ax = plt.subplots(1, 1)
+def plot_undertone_distribution():
+    fig, ax = plt.subplots()
+    plt.subplots_adjust(bottom=0.25)
+    overtone_init = 16
+    undertone_init = 8
+    view_notes = True
+
     my_tones = defaultdict(int)
-    for overtone in range(1, overtone_max + 1):
-        for undertone in range(1, undertone_max + 1):
+    for overtone in range(1, overtone_init + 1):
+        for undertone in range(1, undertone_init + 1):
             tone = Fraction(overtone, undertone)
             my_tones[tone] += 1
-    plt.plot(my_tones.keys(), my_tones.values(), marker='.', linestyle='')
+    lines, = plt.plot(my_tones.keys(), my_tones.values(), marker='.', linestyle='')
 
-    x_ticks = []
-    for x, y in my_tones.items():
-        if y >= view_threshold:
-            x_ticks.append(x)
-    x_tick_names = x_tick_locations = x_ticks
+    ax_view = plt.axes([0.2, 0.15, 0.65, 0.03])
+    view_steps = [step for step in range(1, undertone_init + 1)]
+    view_slider = Slider(
+        ax_view, "View", 1, undertone_init,
+        valinit=2, valstep=view_steps
+    )
 
-    if view_notes:
-        x_tick_names = [get_closest_scientific_pitch(x)[1] for x in x_tick_names]
+    max_tone_power = 8
 
-    ax.set_xticks(x_tick_locations, x_tick_names)
+    ax_overtones = plt.axes([0.2, 0.1, 0.65, 0.03])
+    overtone_steps = [0] + [2 ** step for step in range(max_tone_power)]
+    overtone_slider = Slider(
+        ax_overtones, "Overtones", 0, 2 ** (max_tone_power - 1),
+        valinit=overtone_init, valstep=overtone_steps
+    )
+
+    ax_undertones = plt.axes([0.2, 0.05, 0.65, 0.03])
+    undertone_steps = [0] + [2 ** step for step in range(max_tone_power)]
+    undertone_slider = Slider(
+        ax_undertones, "Undertones", 0, 2 ** (max_tone_power - 1),
+        valinit=undertone_init, valstep=undertone_steps
+    )
+
+    def update_view(val):
+        x_ticks = []
+        for x, y in my_tones.items():
+            if y >= val:
+                x_ticks.append(x)
+        x_tick_names = x_tick_locations = x_ticks
+
+        if view_notes:
+            x_tick_names = [get_closest_scientific_pitch(x)[1] for x in x_tick_names]
+
+        x_low, x_high = ax.get_xlim()
+        ax.set_xticks(x_tick_locations, x_tick_names)
+        ax.set_xlim(x_low, x_high)
+
+        fig.canvas.draw_idle()
+
+    def update_tones(val):
+        my_tones.clear()
+        for overtone in range(1, int(overtone_slider.val) + 1):
+            for undertone in range(1, int(undertone_slider.val) + 1):
+                tone = Fraction(overtone, undertone)
+                my_tones[tone] += 1
+        lines.set_xdata(list(my_tones.keys()))
+        lines.set_ydata(list(my_tones.values()))
+
+        update_view(view_slider.val)
+
+        fig.canvas.draw_idle()
+
+    ax_button = plt.axes([0.8, 0.01, 0.08, 0.04])
+    button = Button(ax_button, 'Toggle view', hovercolor='0.975')
+
+    def toggle_view(event):
+        nonlocal view_notes
+        view_notes = not view_notes
+        update_view(view_slider.val)
+
     ax.set_xlim(0, 2)
+    update_view(2)
+    view_slider.on_changed(update_view)
+    undertone_slider.on_changed(update_tones)
+    overtone_slider.on_changed(update_tones)
+    button.on_clicked(toggle_view)
+
     ax.set_xlabel('Frequency')
-    ax.set_ylabel('Undertone overlap #')
+    ax.set_ylabel('Overlapping undertones')
+    plt.show()
 
 
 if __name__ == '__main__':
-    plot_undertone_distribution(undertone_max=8, overtone_max=8, view_threshold=2, view_notes=True)
+    plot_undertone_distribution()
     plt.show()
