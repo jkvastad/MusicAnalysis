@@ -141,11 +141,11 @@ def make_24_et():
     to_file(my_keyboard, "24_ET_3_octaves.txt", path=JK_TUNINGS_PATH)
 
 
-def get_undertones_for_harmonics(undertones, harmonics) -> set[Fraction, ...]:
+def get_undertones_for_harmonics(number_of_undertones, number_of_harmonics) -> set[Fraction, ...]:
     all_tones = set()
 
-    for harmonic in range(1, harmonics + 1):
-        all_tones = all_tones | get_undertones_for_harmonic(harmonic, undertones)
+    for harmonic in range(1, number_of_harmonics + 1):
+        all_tones = all_tones | get_undertones_for_harmonic(harmonic, number_of_undertones)
 
     return all_tones
 
@@ -292,7 +292,7 @@ def get_centered_keyboard(fractions: set, fundamental_tone=261.63, c_octave=4, k
     index_of_fundamental = fractions.index(Fraction(1, 1))
 
     if len(fractions) > keyboard_size:
-        fractions = fractions[index_of_fundamental - keyboard_size / 2:index_of_fundamental + keyboard_size / 2]
+        fractions = fractions[index_of_fundamental - keyboard_size // 2:index_of_fundamental + keyboard_size // 2]
 
     lower_frequencies = [fundamental_tone * fraction for fraction in fractions[:index_of_fundamental]]
     higher_frequencies = [fundamental_tone * fraction for fraction in fractions[index_of_fundamental:]]
@@ -316,9 +316,5 @@ def sort_by_scientific_notation(data_list):
 
 
 if __name__ == "__main__":
-    my_undertones = 16
-    my_harmonics = 16
-    my_fractions = get_undertones_for_harmonics(my_undertones, my_harmonics)
-    my_fractions = sorted(my_fractions)
-    my_fractions = set(my_fractions[my_fractions.index(Fraction(1, 4)):])
-    make_keyboard_from_fractions(my_fractions, name=f"{my_undertones}_undertones_for_{my_harmonics}_overtones")
+    my_fractions = get_undertones_for_harmonics(16, 16)
+    make_keyboard_from_fractions(my_fractions, name=f"16_by_16_undertone_overtone")
