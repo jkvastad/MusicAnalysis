@@ -217,10 +217,15 @@ def get_fractions_with_relative_dissonance(relative_dissonance, max_consonance):
     return fractions
 
 
-def make_keyboard_from_fractions(fractions, name="custom_fractions", fundamental_tone=261.63):
-    my_keyboard, first_midi_note = get_centered_keyboard(fractions, fundamental_tone=fundamental_tone)
-    to_file(my_keyboard, f"{name}.txt", first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)
-    notes_as_midi = notes_to_midi(first_midi_note, list(fractions))
+def fractions_to_frequencies(fractions, fundamental_tone=261.63):
+    return [fundamental_tone * fraction for fraction in fractions]
+
+
+def make_keyboard_from_fractions(fractions, name="custom_fractions"):
+    my_keyboard, first_midi_note = get_centered_keyboard(fractions)
+    to_file(fractions_to_frequencies(my_keyboard), f"{name}.txt", first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)
+
+    notes_as_midi = notes_to_midi(first_midi_note, list(my_keyboard))
     print("Keyboard layout:")
     for i in range(10):
         octave_keys = notes_as_midi[12 * i:12 * (i + 1)]
@@ -229,21 +234,21 @@ def make_keyboard_from_fractions(fractions, name="custom_fractions", fundamental
             print([get_closest_scientific_pitch(octave_key)[:3] for octave_key in octave_keys if octave_key != 0])
 
 
-def make_keyboard_with_absolute_dissonance(absolute_dissonance, max_consonance, fundamental_tone=261.63):
+def make_keyboard_with_absolute_dissonance(absolute_dissonance, max_consonance):
     fractions = get_fractions_with_absolute_dissonance(absolute_dissonance, max_consonance)
     fractions.add(Fraction(1, 1))
-    my_keyboard, first_midi_note = get_centered_keyboard(fractions, fundamental_tone=fundamental_tone)
-    to_file(my_keyboard, f"abs_diss_{absolute_dissonance}_max_con_{max_consonance}.txt",
+    my_keyboard, first_midi_note = get_centered_keyboard(fractions)
+    to_file(fractions_to_frequencies(my_keyboard), f"abs_diss_{absolute_dissonance}_max_con_{max_consonance}.txt",
             first_midi_note=first_midi_note,
             path=JK_TUNINGS_PATH)
     print(sorted(fractions))
 
 
-def make_keyboard_with_relative_dissonance(relative_dissonance, max_consonance, fundamental_tone=261.63):
+def make_keyboard_with_relative_dissonance(relative_dissonance, max_consonance):
     fractions = get_fractions_with_relative_dissonance(relative_dissonance, max_consonance)
     fractions.add(Fraction(1, 1))
-    my_keyboard, first_midi_note = get_centered_keyboard(fractions, fundamental_tone=fundamental_tone)
-    to_file(my_keyboard, f"rel_diss_{relative_dissonance}_max_con_{max_consonance}.txt",
+    my_keyboard, first_midi_note = get_centered_keyboard(fractions)
+    to_file(fractions_to_frequencies(my_keyboard), f"rel_diss_{relative_dissonance}_max_con_{max_consonance}.txt",
             first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)
     print(sorted(fractions))
 
@@ -257,45 +262,46 @@ def get_fractions_with_remainder_dissonance(remainder_dissonance, max_consonance
     return fractions
 
 
-def make_keyboard_with_remainder_dissonance(remainder_dissonance, max_consonance, fundamental_tone=261.63):
+def make_keyboard_with_remainder_dissonance(remainder_dissonance, max_consonance):
     fractions = get_fractions_with_remainder_dissonance(remainder_dissonance, max_consonance)
     fractions.add(Fraction(1, 1))
-    my_keyboard, first_midi_note = get_centered_keyboard(fractions, fundamental_tone=fundamental_tone)
-    to_file(my_keyboard, f"rem_diss_{remainder_dissonance}_max_con_{max_consonance}.txt",
+    my_keyboard, first_midi_note = get_centered_keyboard(fractions)
+    to_file(fractions_to_frequencies(my_keyboard), f"rem_diss_{remainder_dissonance}_max_con_{max_consonance}.txt",
             first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)
     print(sorted(fractions))
 
 
-def make_keyboard_from_fractions_with_denominator(denominator, number_of_fractions, fundamental_tone=261.63):
+def make_keyboard_from_fractions_with_denominator(denominator, number_of_fractions):
     fractions = get_fractions_with_denominator(denominator, number_of_fractions)
     fractions.add(Fraction(1, 1))
-    my_keyboard, first_midi_note = get_centered_keyboard(fractions, fundamental_tone=fundamental_tone)
-    to_file(my_keyboard, f"denominator_{denominator}_notes_{number_of_fractions}.txt",
+    my_keyboard, first_midi_note = get_centered_keyboard(fractions)
+    to_file(fractions_to_frequencies(my_keyboard), f"denominator_{denominator}_notes_{number_of_fractions}.txt",
             first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)
     print(sorted(fractions))
 
 
-def make_keyboard_from_harmonic_undertones(max_harmonic, max_undertones, fundamental_tone=261.63):
+def make_keyboard_from_harmonic_undertones(max_harmonic, max_undertones):
     fractions = set()
     for harmonic in range(1, max_harmonic + 1):
         fractions.update(get_undertones_for_harmonic(harmonic, max_undertones))
     fractions.add(Fraction(1, 1))
-    my_keyboard, first_midi_note = get_centered_keyboard(fractions, fundamental_tone=fundamental_tone)
-    to_file(my_keyboard, f"max_harm_{max_harmonic}_undertones_{max_undertones}.txt",
+    my_keyboard, first_midi_note = get_centered_keyboard(fractions)
+    to_file(fractions_to_frequencies(my_keyboard), f"max_harm_{max_harmonic}_undertones_{max_undertones}.txt",
             first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)
     print(sorted(fractions))
 
 
-def get_centered_keyboard(fractions: set, fundamental_tone=261.63, c_octave=4, keyboard_size=60):
+def get_centered_keyboard(fractions: set, c_octave=4, keyboard_size=60):
     fractions.add(Fraction(1, 1))
     fractions = sorted(list(fractions))
     index_of_fundamental = fractions.index(Fraction(1, 1))
 
     if len(fractions) > keyboard_size:
         fractions = fractions[index_of_fundamental - keyboard_size // 2:index_of_fundamental + keyboard_size // 2]
+        index_of_fundamental = fractions.index(Fraction(1, 1))
 
-    lower_frequencies = [fundamental_tone * fraction for fraction in fractions[:index_of_fundamental]]
-    higher_frequencies = [fundamental_tone * fraction for fraction in fractions[index_of_fundamental:]]
+    lower_frequencies = [fraction for fraction in fractions[:index_of_fundamental]]
+    higher_frequencies = [fraction for fraction in fractions[index_of_fundamental:]]
     center_midi = 12 * (c_octave + 1)
     return lower_frequencies + higher_frequencies, center_midi - len(lower_frequencies)
 
