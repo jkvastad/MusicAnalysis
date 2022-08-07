@@ -388,23 +388,23 @@ def plot_undertone_distribution():
     plt.show()
 
 
+def print_undertones_as_octave_reduced_12_tet_approximations(number_of_undertones, number_of_overtones):
+    all_tones = set()
+    for overtone in range(1, number_of_overtones + 1):
+        for undertone in range(1, number_of_undertones + 1):
+            tone = get_octave_reduction(Fraction(overtone, undertone))
+            all_tones.add(tone)
+
+    approximations = defaultdict(list)
+    for tone in all_tones:
+        tone_data = get_closest_scientific_pitch(tone)
+        approximations[tone_data[1]].append(tone_data)
+
+    for name, approximation_list in sorted(approximations.items(), key=lambda x: (x[0][0], len(x[0]))):
+        print('{:3}'.format(name),
+              [approx[0:1] + approx[2:3] for approx in sorted(approximation_list, key=lambda x: abs(x[3]))])
+
+
 if __name__ == '__main__':
-    '''
-    my_fractions = [Fraction(2, 3), Fraction(1)]
-    plot_undertones(my_fractions, [15] * len(my_fractions))
-
-    my_fractions = [Fraction(1), Fraction(3, 2)]
-    plot_undertones(my_fractions, [15] * len(my_fractions))
-    '''
-
-    my_fractions = [Fraction(1), Fraction(3, 2), Fraction(9, 4)]
-    plot_undertones(my_fractions, [15] * len(my_fractions))
-
-    my_fractions = [Fraction(2, 3), Fraction(1), Fraction(3, 2)]
-    plot_undertones(my_fractions, [15] * len(my_fractions))
-
-    my_fractions = [Fraction(4, 9), Fraction(2, 3), Fraction(1)]
-    plot_undertones(my_fractions, [15] * len(my_fractions))
-
-    plt.show()
+    print_undertones_as_octave_reduced_12_tet_approximations(16, 16)
     pass
