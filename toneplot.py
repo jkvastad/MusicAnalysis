@@ -389,15 +389,22 @@ def plot_undertone_distribution():
 
 
 if __name__ == '__main__':
-    major_chord = [Fraction(1, 1), Fraction(3, 2), Fraction(5, 4)]
+    '''
+    my_fractions = [Fraction(2, 3), Fraction(1)]
+    plot_undertones(my_fractions, [15] * len(my_fractions))
 
-    seven_by_four = major_chord + [Fraction(7, 4)]
-    plot_undertones(seven_by_four, [15] * 4)
+    my_fractions = [Fraction(1), Fraction(3, 2)]
+    plot_undertones(my_fractions, [15] * len(my_fractions))
+    '''
 
-    nine_by_five = major_chord + [Fraction(9, 5)]
-    plot_undertones(nine_by_five, [15] * 4, max_harmonic=12)
+    my_fractions = [Fraction(1), Fraction(3, 2), Fraction(9, 4)]
+    plot_undertones(my_fractions, [15] * len(my_fractions))
 
-    sixteen_by_nine = major_chord + [Fraction(16, 9)]
-    plot_undertones(sixteen_by_nine, [15] * 4, max_harmonic=12)
+    my_fractions = [Fraction(2, 3), Fraction(1), Fraction(3, 2)]
+    plot_undertones(my_fractions, [15] * len(my_fractions))
+
+    my_fractions = [Fraction(4, 9), Fraction(2, 3), Fraction(1)]
+    plot_undertones(my_fractions, [15] * len(my_fractions))
+
     plt.show()
     pass

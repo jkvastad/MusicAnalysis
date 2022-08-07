@@ -99,42 +99,6 @@ def get_octaves(fractions, fundamental, octave_size=2, c_octave=2, octaves=5):
         return __fractions_to_keys(list(range(len(fractions))), len(fractions))
 
 
-def generate_linear_resonance_sequence(base_frequency=261.63, generating_overtone=8):
-    divisors = [generating_overtone - x for x in range(generating_overtone // 2)]
-    raw_tones = sorted([generating_overtone / x for x in divisors])
-    return [i * base_frequency for i in raw_tones]
-
-
-def write_linear_resonance_files(base_frequency=261.63, generating_overtone=8, octaves=1):
-    if octaves == 1:
-        file_name = f"linear_resonance_tones_{generating_overtone}.txt"
-    else:
-        file_name = f"linear_resonance_tones_{generating_overtone}_octaves_{octaves}.txt"
-    my_keyboard = generate_linear_resonance_sequence(
-        base_frequency=base_frequency,
-        generating_overtone=generating_overtone,
-    )
-
-    my_keyboard = [
-        x * 2 ** y for x in my_keyboard for y in range(octaves)
-    ]
-
-    to_file(sorted(my_keyboard), file_name, path=JK_TUNINGS_PATH)
-
-
-def main():
-    base_frequency = 261.63
-    my_keyboard = [base_frequency * to_octave_reduced_fraction(i) for i in range(1, 25)]
-    my_keyboard = sorted(set(my_keyboard))
-    to_file(my_keyboard, "linear_resonance_sequence.txt", path=JK_TUNINGS_PATH)
-
-
-def main2():
-    base_frequency = 100
-    my_keyboard = [base_frequency * i for i in range(1, 36)]
-    to_file(my_keyboard, "constant_frequency_difference_100.txt", path=JK_TUNINGS_PATH)
-
-
 def make_24_et():
     base_frequency = 261.63
     my_keyboard = [base_frequency * 2 ** (i / 24) for i in range(64)]
@@ -322,5 +286,7 @@ def sort_by_scientific_notation(data_list):
 
 
 if __name__ == "__main__":
-    my_fractions = get_undertones_for_harmonics(16, 16)
-    make_keyboard_from_fractions(my_fractions, name=f"16_by_16_undertone_overtone")
+    my_fractions = {Fraction(1, 1)}
+    for i in range(8):
+        my_fractions.add(Fraction(9 - i, 8 - i))
+    make_keyboard_from_fractions(my_fractions, name=f"9_undertones_as_overtones")
