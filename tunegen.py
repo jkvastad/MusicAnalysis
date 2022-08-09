@@ -286,7 +286,8 @@ def sort_by_scientific_notation(data_list):
 
 
 if __name__ == "__main__":
-    my_fractions = {Fraction(1, 1)}
-    for i in range(8):
-        my_fractions.add(Fraction(9 - i, 8 - i))
-    make_keyboard_from_fractions(my_fractions, name=f"9_undertones_as_overtones")
+    my_fractions = {Fraction(1, 1), Fraction(16, 15), Fraction(9, 8), Fraction(6, 5), Fraction(5, 4), Fraction(4, 3),
+                    Fraction(7, 5), Fraction(3, 2), Fraction(8, 5), Fraction(5, 3), Fraction(16, 9), Fraction(15, 8)}
+    my_fractions = {fraction for fraction in my_fractions} | {2 * fraction for fraction in my_fractions} | \
+                   {fraction / 2 for fraction in my_fractions}
+    make_keyboard_from_fractions(my_fractions, name=f"low_base_numerator_denominator")

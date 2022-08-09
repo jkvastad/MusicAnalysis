@@ -405,6 +405,28 @@ def print_undertones_as_octave_reduced_12_tet_approximations(number_of_undertone
               [approx[0:1] + approx[2:3] for approx in sorted(approximation_list, key=lambda x: abs(x[3]))])
 
 
+def print_overtone_undertones_above_fundamental(number_of_overtones):
+    all_tones = set()
+    for overtone in range(1, number_of_overtones + 1):
+        for undertone in range(1, overtone + 1):
+            tone = get_octave_reduction(Fraction(overtone, undertone))
+            all_tones.add(tone)
+    for tone in sorted(all_tones):
+        print(get_closest_scientific_pitch(tone))
+
+
+def print_undertone_overtones_below_fundamental(number_of_undertones):
+    all_tones = set()
+    for undertone in range(1, number_of_undertones + 1):
+        for overtone in range(1, undertone + 1):
+            tone = get_octave_reduction(Fraction(overtone, undertone))
+            all_tones.add(tone)
+    for tone in sorted(all_tones):
+        print(get_closest_scientific_pitch(tone))
+
+
 if __name__ == '__main__':
-    print_undertones_as_octave_reduced_12_tet_approximations(16, 16)
+    print_overtone_undertones_above_fundamental(16)
+    print()
+    print_undertone_overtones_below_fundamental(16)
     pass
