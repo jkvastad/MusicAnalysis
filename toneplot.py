@@ -425,8 +425,30 @@ def print_undertone_overtones_below_fundamental(number_of_undertones):
         print(get_closest_scientific_pitch(tone))
 
 
+def print_undertone_overtone_series_matching_keyboard_key(key=0):
+    # index 0 for C
+    tone_series = [1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0]
+    series_name = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    matches = []
+    for i in range(12):
+        i %= 12
+        if tone_series[key - i]:
+            matches.append(series_name[i])
+
+    all_matches = set()
+    print(f"Key {series_name[key]} in overtone series:")
+    print(matches)
+    all_matches.update(matches)
+
+    matches = [series_name[(series_name.index(match) + 2) % 12] for match in matches]
+    print(f"Key {series_name[key]} in undertone series:")
+    print(matches)
+    all_matches.update(matches)
+
+    print(f"Key {series_name[key]} in 9th chords:")
+    print(sorted(all_matches, key=lambda key_name: series_name.index(key_name)))
+
+
 if __name__ == '__main__':
-    print_overtone_undertones_above_fundamental(16)
-    print()
-    print_undertone_overtones_below_fundamental(16)
+    print_undertone_overtone_series_matching_keyboard_key()
     pass
