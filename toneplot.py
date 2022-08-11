@@ -3,7 +3,8 @@ from fractions import Fraction
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import Slider, Button
-from mautils import get_closest_scientific_pitch, get_lcm_for_fractions, get_lcm_for_combinations
+from mautils import get_closest_scientific_pitch, get_lcm_for_fractions, get_lcm_for_combinations, \
+    get_possible_lcm_configurations_for_fractions
 
 
 def get_all_notes_with_dissonance_less_than(max_dissonance):
@@ -432,11 +433,12 @@ def print_undertone_overtone_series_matching_keyboard_key(key=0):
     print(sorted(all_matches, key=lambda key_name: series_name.index(key_name)))
 
 
-if __name__ == '__main__':
-    max_subharmonic = 4
-    my_wavelengths = [Fraction(max_subharmonic - i, max_subharmonic) for i in range(max_subharmonic)]
-    my_frequencies = [Fraction(fraction.denominator, fraction.numerator) for fraction in my_wavelengths]
-    plot_undertones(my_wavelengths, [15] * len(my_wavelengths))
-    print(get_lcm_for_fractions(*my_frequencies))
-    plt.show()
-    pass
+def print_possible_lcm_configurations_for_fractions(*fractions: Fraction):
+    fractions, lcm_values, lcm_configurations = get_possible_lcm_configurations_for_fractions(*fractions)
+    print("Original set of fractions:")
+    print(fractions)
+    print()
+    print("Possible lcm configurations:")
+    for i in range(len(lcm_values)):
+        print(f"lcm: {lcm_values[i]}", f"Configuration: {lcm_configurations[i]}")
+    print()

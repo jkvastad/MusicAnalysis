@@ -35,3 +35,19 @@ def get_lcm_for_combinations(fractions: set[Fraction, Fraction, ...]) -> list[Fr
         for combination in combinations(fractions, r=i):
             lcm_combinations.add(get_lcm_for_fractions(*combination))
     return sorted(lcm_combinations)
+
+
+def get_possible_lcm_configurations_for_fractions(*fractions: Fraction):
+    fractions = sorted(set(fractions))
+    lcm_configurations = []
+    lcm_values = []
+
+    for reference_fraction in fractions:
+        lcm_configurations.append([fraction / reference_fraction for fraction in fractions])
+        lcm_values.append(get_lcm_for_fractions(*lcm_configurations[-1]))
+
+    return tuple(fractions), tuple(lcm_values), tuple(lcm_configurations)
+
+
+def get_inverted_fractions(*fractions: Fraction):
+    return [Fraction(fraction.denominator, fraction.numerator) for fraction in fractions]
