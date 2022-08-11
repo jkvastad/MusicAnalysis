@@ -242,7 +242,7 @@ def plot_undertones(fractions: list[Fraction], number_of_harmonics: list[int], m
             for multiple in range(1, int(global_wavelength_lcm * wavelength.denominator / wavelength.numerator) + 1):
                 current_rectangle = rectangles_by_wavelength_denominator[denominator][
                     wavelength.numerator * multiple - 1]
-                current_rectangle.set_alpha(current_rectangle.get_alpha() + global_alpha)
+                current_rectangle.set_alpha(min(1, max(0, current_rectangle.get_alpha() + global_alpha)))
 
     # draw rectangles
     for rectangles in rectangles_by_wavelength_denominator.values():
@@ -433,7 +433,10 @@ def print_undertone_overtone_series_matching_keyboard_key(key=0):
 
 
 if __name__ == '__main__':
-    my_fractions = [Fraction(6, 8), Fraction(7, 8), Fraction(1, 1)]
-    print(get_lcm_for_fractions(*my_fractions))
-
+    max_subharmonic = 4
+    my_wavelengths = [Fraction(max_subharmonic - i, max_subharmonic) for i in range(max_subharmonic)]
+    my_frequencies = [Fraction(fraction.denominator, fraction.numerator) for fraction in my_wavelengths]
+    plot_undertones(my_wavelengths, [15] * len(my_wavelengths))
+    print(get_lcm_for_fractions(*my_frequencies))
+    plt.show()
     pass
