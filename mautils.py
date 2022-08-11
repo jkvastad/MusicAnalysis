@@ -1,4 +1,7 @@
 import math
+from fractions import Fraction
+from itertools import combinations
+from math import gcd, lcm
 
 
 def get_closest_scientific_pitch(fraction):
@@ -18,3 +21,17 @@ def get_closest_scientific_pitch(fraction):
     closest_pitch = c_4 * 2 ** (name_number / 12)
     return fraction, pitch_name, 1200 * math.log2(
         fraction_as_pitch / closest_pitch), smallest_diff / closest_pitch, smallest_diff
+
+
+def get_lcm_for_fractions(*fractions: Fraction):
+    fractions_gcd = gcd(*[fraction.denominator for fraction in fractions])
+    fractions_lcm = Fraction(lcm(*[fraction.numerator for fraction in fractions]), fractions_gcd)
+    return fractions_lcm
+
+
+def get_lcm_for_combinations(fractions: set[Fraction, Fraction, ...]) -> list[Fraction]:
+    lcm_combinations = set()
+    for i in range(2, len(fractions) + 1):
+        for combination in combinations(fractions, r=i):
+            lcm_combinations.add(get_lcm_for_fractions(*combination))
+    return sorted(lcm_combinations)

@@ -1,26 +1,9 @@
 from collections import defaultdict
 from fractions import Fraction
 import matplotlib.pyplot as plt
-from math import lcm
-from math import gcd
-from itertools import combinations
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import Slider, Button
-from mautils import get_closest_scientific_pitch
-
-
-def get_lcm_for_fractions(*fractions: Fraction):
-    fractions_gcd = gcd(*[fraction.denominator for fraction in fractions])
-    fractions_lcm = Fraction(lcm(*[fraction.numerator for fraction in fractions]), fractions_gcd)
-    return fractions_lcm
-
-
-def get_lcm_for_combinations(fractions: set[Fraction, Fraction, ...]) -> list[Fraction]:
-    lcm_combinations = set()
-    for i in range(2, len(fractions) + 1):
-        for combination in combinations(fractions, r=i):
-            lcm_combinations.add(get_lcm_for_fractions(*combination))
-    return sorted(lcm_combinations)
+from mautils import get_closest_scientific_pitch, get_lcm_for_fractions, get_lcm_for_combinations
 
 
 def get_all_notes_with_dissonance_less_than(max_dissonance):
@@ -450,5 +433,7 @@ def print_undertone_overtone_series_matching_keyboard_key(key=0):
 
 
 if __name__ == '__main__':
-    print_undertone_overtone_series_matching_keyboard_key()
+    my_fractions = [Fraction(6, 8), Fraction(7, 8), Fraction(1, 1)]
+    print(get_lcm_for_fractions(*my_fractions))
+
     pass
