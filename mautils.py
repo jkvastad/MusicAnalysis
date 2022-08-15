@@ -23,7 +23,9 @@ def get_closest_scientific_pitch(fraction):
         fraction_as_pitch / closest_pitch), smallest_diff / closest_pitch, smallest_diff
 
 
-def get_lcm_for_fractions(*fractions: Fraction):
+def get_lcm_for_fractions(*fractions: Fraction, ignore_zero=True):
+    if ignore_zero:
+        fractions = [fraction for fraction in fractions if fraction != 0]
     fractions_gcd = gcd(*[fraction.denominator for fraction in fractions])
     fractions_lcm = Fraction(lcm(*[fraction.numerator for fraction in fractions]), fractions_gcd)
     return fractions_lcm
@@ -67,14 +69,14 @@ def get_all_12_tet_chords():
     return relevant_key_combinations
 
 
-def keys_to_chord(keys):
-    if len(keys) != 12:
-        raise ValueError(f"keys must be len 12, was {len(keys)}")
+def chord_to_fractions(chord):
+    if len(chord) != 12:
+        raise ValueError(f"chord must be len 12, was {len(chord)}")
     keyboard_as_fractions = [Fraction(1, 1), Fraction(16, 15), Fraction(9, 8), Fraction(6, 5), Fraction(5, 4),
                              Fraction(4, 3), Fraction(7, 5), Fraction(3, 2), Fraction(8, 5), Fraction(5, 3),
                              Fraction(16, 9), Fraction(15, 8)]
-    chord = [0] * 12
-    for i, key in enumerate(keys):
+    fractions = [Fraction(0)] * 12
+    for i, key in enumerate(chord):
         if key:
-            chord[i] = keyboard_as_fractions[i]
-    return chord
+            fractions[i] = keyboard_as_fractions[i]
+    return fractions
