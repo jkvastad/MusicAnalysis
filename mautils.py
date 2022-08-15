@@ -65,3 +65,16 @@ def get_all_12_tet_chords():
             relevant_key_combinations.append((1, 0, *comb))
 
     return relevant_key_combinations
+
+
+def keys_to_chord(keys):
+    if len(keys) != 12:
+        raise ValueError(f"keys must be len 12, was {len(keys)}")
+    keyboard_as_fractions = [Fraction(1, 1), Fraction(16, 15), Fraction(9, 8), Fraction(6, 5), Fraction(5, 4),
+                             Fraction(4, 3), Fraction(7, 5), Fraction(3, 2), Fraction(8, 5), Fraction(5, 3),
+                             Fraction(16, 9), Fraction(15, 8)]
+    chord = [0] * 12
+    for i, key in enumerate(keys):
+        if key:
+            chord[i] = keyboard_as_fractions[i]
+    return chord
