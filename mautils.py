@@ -1,6 +1,6 @@
 import math
 from fractions import Fraction
-from itertools import combinations
+from itertools import combinations, product, groupby
 from math import gcd, lcm
 
 
@@ -51,3 +51,17 @@ def get_possible_lcm_configurations_for_fractions(*fractions: Fraction):
 
 def get_inverted_fractions(*fractions: Fraction):
     return [Fraction(fraction.denominator, fraction.numerator) for fraction in fractions]
+
+
+def get_all_12_tet_chords():
+    # Chord defined as any set of octave reduced notes in root position which does not contain a semitone intervall
+    all_key_combinations = product((0, 1), repeat=10)
+    relevant_key_combinations = []
+    for comb in all_key_combinations:
+        for i in range(len(comb) - 1):
+            if comb[i] == comb[i + 1] == 1:
+                break
+        else:
+            relevant_key_combinations.append((1, 0, *comb))
+
+    return relevant_key_combinations
