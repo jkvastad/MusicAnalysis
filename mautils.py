@@ -1,4 +1,5 @@
 import math
+from collections import defaultdict
 from fractions import Fraction
 from itertools import combinations, product, groupby
 from math import gcd, lcm
@@ -75,8 +76,18 @@ def chord_to_fractions(chord):
     keyboard_as_fractions = [Fraction(1, 1), Fraction(16, 15), Fraction(9, 8), Fraction(6, 5), Fraction(5, 4),
                              Fraction(4, 3), Fraction(7, 5), Fraction(3, 2), Fraction(8, 5), Fraction(5, 3),
                              Fraction(16, 9), Fraction(15, 8)]
-    fractions = [Fraction(0)] * 12
+    fractions = [0] * 12
     for i, key in enumerate(chord):
         if key:
             fractions[i] = keyboard_as_fractions[i]
+
     return fractions
+
+
+def sort_fractions_by_lcm(fractions: list[list, ...]) -> dict[list[set[Fraction, ...]]]:
+    lcm_sorted = defaultdict(list)
+    for fraction_list in fractions:
+        fraction_set = {fraction for fraction in fraction_list if fraction != 0}
+        lcm_sorted[get_lcm_for_fractions(*fraction_set)].append(fraction_set)
+
+    return dict(sorted(lcm_sorted.items()))
