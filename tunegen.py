@@ -64,15 +64,6 @@ def get_harmonic_series(fundamental_frequency, number_of_harmonics):
     return harmonic_series
 
 
-def to_octave_reduced_fraction(numerator, octave_size=2):
-    octave = 1
-    while octave < numerator:
-        octave *= octave_size
-    if octave != 1:
-        octave //= octave_size
-    return Fraction(numerator, octave)
-
-
 def get_octaves(fractions, fundamental, octave_size=2, c_octave=2, octaves=5):
     fractions = sorted(fractions)
 

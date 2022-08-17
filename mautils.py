@@ -3,6 +3,7 @@ from collections import defaultdict
 from fractions import Fraction
 from itertools import combinations, product, groupby
 from math import gcd, lcm
+from sympy.ntheory import factorint
 
 
 def get_closest_scientific_pitch(fraction):
@@ -91,3 +92,29 @@ def sort_fractions_by_lcm(fractions: list[list, ...]) -> dict[list[set[Fraction,
         lcm_sorted[get_lcm_for_fractions(*fraction_set)].append(fraction_set)
 
     return dict(sorted(lcm_sorted.items()))
+
+
+def get_fractions_with_bases_up_to(fractions: set[Fraction, ...], max_base=5):
+    filtered_fractions = set()
+    for fraction in fractions:
+        for factor in factorint(fraction.numerator):
+            if factor > max_base:
+                break
+        else:
+            for factor in factorint(fraction.denominator):
+                if factor > max_base:
+                    break
+            else:
+                filtered_fractions.add(fraction)
+
+    return filtered_fractions
+
+
+def to_octave_reduced_fractions(fractions, octave_size=2):
+    reduced_fractions = set()
+    for fraction in fractions:
+        while fraction < octave_size:
+            fraction *= octave_size
+        fraction /= octave_size
+        reduced_fractions.add(fraction)
+    return reduced_fractions

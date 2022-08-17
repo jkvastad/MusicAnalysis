@@ -442,3 +442,5 @@ def print_possible_lcm_configurations_for_fractions(*fractions: Fraction):
     for i in range(len(lcm_values)):
         print(f"lcm: {lcm_values[i]}", f"Configuration: {lcm_configurations[i]}")
     print()
+
+
