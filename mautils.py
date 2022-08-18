@@ -113,8 +113,11 @@ def get_fractions_with_bases_up_to(fractions: set[Fraction, ...], max_base=5):
 def to_octave_reduced_fractions(fractions, octave_size=2):
     reduced_fractions = set()
     for fraction in fractions:
+        while fraction > octave_size:
+            fraction /= octave_size
         while fraction < octave_size:
             fraction *= octave_size
         fraction /= octave_size
+
         reduced_fractions.add(fraction)
     return reduced_fractions
