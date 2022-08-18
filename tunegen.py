@@ -186,7 +186,9 @@ def make_keyboard_from_fractions(fractions, name="custom_fractions"):
         octave_keys = notes_as_midi[12 * i:12 * (i + 1)]
         if any(octave_keys):
             print(f"octave {i - 1}")
-            print([get_closest_scientific_pitch(octave_key)[:3] for octave_key in octave_keys if octave_key != 0])
+            print([get_closest_scientific_pitch(octave_key)[:3] for octave_key in octave_keys[:4] if octave_key != 0])
+            print([get_closest_scientific_pitch(octave_key)[:3] for octave_key in octave_keys[4:8] if octave_key != 0])
+            print([get_closest_scientific_pitch(octave_key)[:3] for octave_key in octave_keys[8:12] if octave_key != 0])
 
 
 def make_keyboard_with_absolute_dissonance(absolute_dissonance, max_consonance):

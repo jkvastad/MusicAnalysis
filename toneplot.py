@@ -3,8 +3,7 @@ from fractions import Fraction
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import Slider, Button
-from mautils import get_closest_scientific_pitch, get_lcm_for_fractions, get_lcm_for_combinations, \
-    get_possible_lcm_configurations_for_fractions
+from mautils import *
 
 
 def get_all_notes_with_dissonance_less_than(max_dissonance):
@@ -444,3 +443,16 @@ def print_possible_lcm_configurations_for_fractions(*fractions: Fraction):
     print()
 
 
+def print_major_chord_self_matches():
+    major = {Fraction(1), Fraction(5, 4), Fraction(3, 2)}
+    print("Major chord")
+    major_matches = generate_matching_chords(major)
+    for my_chord in major_matches:
+        print(my_chord)
+
+def print_minor_chord_self_matches():
+    minor = {Fraction(1), Fraction(5, 4), Fraction(3, 2)}
+    print("Minor chord")
+    major_matches = generate_matching_chords(minor)
+    for my_chord in major_matches:
+        print(my_chord)
