@@ -443,16 +443,18 @@ def print_possible_lcm_configurations_for_fractions(*fractions: Fraction):
     print()
 
 
+def print_chord_self_matches(chord: set[Fraction, ...]):
+    print("Chord fractions:", chord)
+    matches = generate_matching_chords(chord)
+    for fractions in matches:
+        print(fractions)
+
+
 def print_major_chord_self_matches():
     major = {Fraction(1), Fraction(5, 4), Fraction(3, 2)}
-    print("Major chord")
-    major_matches = generate_matching_chords(major)
-    for my_chord in major_matches:
-        print(my_chord)
+    print_chord_self_matches(major)
+
 
 def print_minor_chord_self_matches():
     minor = {Fraction(1), Fraction(5, 4), Fraction(3, 2)}
-    print("Minor chord")
-    major_matches = generate_matching_chords(minor)
-    for my_chord in major_matches:
-        print(my_chord)
+    print_chord_self_matches(minor)

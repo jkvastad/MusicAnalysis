@@ -124,7 +124,7 @@ def to_octave_reduced_fractions(fractions, octave_size=2):
 
 
 def generate_matching_chords(chord: set[Fraction, ...]) -> set[tuple[Fraction, ...], ...]:
-    # chord a matches chord b if they share a fraction relative to some fundamental
+    # chord 'a' matches chord 'b' if they share a fraction relative to some fundamental
     all_matching_chords = set()
     inverted_fractions = get_inverted_fractions(*chord)
     for inverted_fraction in inverted_fractions:
