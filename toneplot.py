@@ -1,37 +1,7 @@
-from collections import defaultdict
-from fractions import Fraction
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import Slider, Button
 from mautils import *
-
-
-def get_all_notes_with_dissonance_less_than(max_dissonance):
-    all_notes = defaultdict(list)
-    for dissonance in range(2, max_dissonance + 1):
-        for j in range(1, dissonance):
-            k = dissonance - j
-            fraction = Fraction(j, k)
-            if fraction not in all_notes[dissonance]:
-                all_notes[dissonance].append(fraction)
-    for notes in all_notes.values():
-        notes.sort()
-    return all_notes
-
-
-def get_unique_notes_with_dissonance_less_than(max_dissonance):
-    unique_notes = {fraction for fractions in get_all_notes_with_dissonance_less_than(max_dissonance).values() for
-                    fraction in fractions}
-    return sorted(list(unique_notes))
-
-
-def get_colors_by_consonance(unique_fractions, max_dissonance):
-    rgb = [(0, 0, 0), (0, 0, 1), (0, 0.5, 0.5), (0, 1, 0), (0.5, 0.5, 0), (1, 0, 0)] + [(0, 0, 0)] * max_dissonance
-    return [rgb[fraction.denominator] for fraction in unique_fractions]
-
-
-def get_heights_by_dissonance(unique_fractions):
-    return [fraction.numerator + fraction.denominator - 1 for fraction in unique_fractions]
 
 
 def get_widths_by_fractions(unique_fractions):
@@ -71,42 +41,6 @@ def get_extended_octave_pair(fraction, octaves):
     for octave in octaves:
         extended_octave_pair.update(get_octave_pair(fraction, octave))
     return extended_octave_pair
-
-
-def plot_notes_with_dissonance_less_than(max_dissonance):
-    # TODO: add label and color descriptions
-    # noinspection PyTypeChecker
-    fig, axs = plt.subplots(1, 2, sharey=True)
-    ratios = get_unique_notes_with_dissonance_less_than(max_dissonance)
-    ratios_one_and_below = ratios[:ratios.index(Fraction(1, 1)) + 1]
-    ratios_one_and_above = ratios[ratios.index(Fraction(1, 1)):]
-
-    ax1 = axs[0]
-    ax1.set_xscale('log')
-    bar_colors = get_colors_by_consonance(ratios_one_and_below, max_dissonance)
-    bar_heights = get_heights_by_dissonance(ratios_one_and_below)
-    bar_widths = get_widths_by_fractions(ratios_one_and_below)
-    ax1.bar(ratios_one_and_below, bar_heights, width=bar_widths, color=bar_colors,
-            **{'edgecolor': 'black', 'linewidth': 0.5})
-
-    ax2 = axs[1]
-    bar_colors = get_colors_by_consonance(ratios_one_and_above, max_dissonance)
-    bar_heights = get_heights_by_dissonance(ratios_one_and_above)
-    bar_widths = get_widths_by_fractions(ratios_one_and_above)
-    ax2.bar(ratios_one_and_above, bar_heights, width=bar_widths, color=bar_colors,
-            **{'edgecolor': 'black', 'linewidth': 0.5})
-
-    fig.subplots_adjust(wspace=0)
-
-    ax1.set_xlim(float(ratios_one_and_below[0]), float(ratios_one_and_below[-1]))
-    ax2.set_xlim(float(ratios_one_and_above[0]), float(ratios_one_and_above[-1]))
-
-    ax1.spines.right.set_visible(False)
-    ax2.spines.left.set_visible(False)
-    ax2.tick_params(which='both', left=False)
-    plt.setp(ax2.get_xticklabels()[0], visible=False)
-
-    plt.show()
 
 
 def plot_wavelength_multiples_for_fraction_sets(fraction_sets: list[set[Fraction, ...], ...], lcm_plot=True,
@@ -388,12 +322,8 @@ def print_undertones_as_octave_reduced_12_tet_approximations(number_of_undertone
               [approx[0:1] + approx[2:3] for approx in sorted(approximation_list, key=lambda x: abs(x[3]))])
 
 
-def print_overtone_undertones_above_fundamental(number_of_overtones):
-    all_tones = set()
-    for overtone in range(1, number_of_overtones + 1):
-        for undertone in range(1, overtone + 1):
-            tone = get_octave_reduction(Fraction(overtone, undertone))
-            all_tones.add(tone)
+def print_overtones_undertones_above_fundamental(number_of_overtones):
+    all_tones = get_overtones_undertones_above_fundamental(number_of_overtones)
     for tone in sorted(all_tones):
         print(get_closest_scientific_pitch(tone))
 
@@ -445,7 +375,7 @@ def print_possible_lcm_configurations_for_fractions(*fractions: Fraction):
 
 def print_chord_self_matches(chord: set[Fraction, ...]):
     print("Chord fractions:", chord)
-    matches = generate_matching_chords(chord)
+    matches = sorted(generate_matching_chords(chord))
     for fractions in matches:
         print(fractions)
 

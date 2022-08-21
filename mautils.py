@@ -5,6 +5,8 @@ from itertools import combinations, product, groupby
 from math import gcd, lcm
 from sympy.ntheory import factorint
 
+from toneplot import get_octave_reduction
+
 
 def get_closest_scientific_pitch(fraction):
     c_4 = 261.6256
@@ -132,3 +134,12 @@ def generate_matching_chords(chord: set[Fraction, ...]) -> set[tuple[Fraction, .
             scaling = inverted_fraction * fraction
             all_matching_chords.add(tuple(note * scaling for note in chord))
     return all_matching_chords
+
+
+def get_overtones_undertones_above_fundamental(number_of_overtones):
+    all_tones = set()
+    for overtone in range(1, number_of_overtones + 1):
+        for undertone in range(1, overtone + 1):
+            tone = get_octave_reduction(Fraction(overtone, undertone))
+            all_tones.add(tone)
+    return all_tones
