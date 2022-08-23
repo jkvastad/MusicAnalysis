@@ -4,7 +4,6 @@ from fractions import Fraction
 from itertools import combinations, product, groupby
 from math import gcd, lcm
 from sympy.ntheory import factorint
-
 from toneplot import get_octave_reduction
 
 
@@ -27,7 +26,7 @@ def get_closest_scientific_pitch(fraction):
         fraction_as_pitch / closest_pitch), smallest_diff / closest_pitch, smallest_diff
 
 
-def get_lcm_for_fractions(*fractions: Fraction, ignore_zero=True):
+def get_lcm_for_fractions(fractions: set[Fraction, ...], ignore_zero=True) -> Fraction:
     if ignore_zero:
         fractions = [fraction for fraction in fractions if fraction != 0]
     fractions_gcd = gcd(*[fraction.denominator for fraction in fractions])
@@ -55,7 +54,7 @@ def get_possible_lcm_configurations_for_fractions(*fractions: Fraction):
     return tuple(fractions), tuple(lcm_values), tuple(lcm_configurations)
 
 
-def get_inverted_fractions(*fractions: Fraction):
+def get_inverted_fractions(*fractions: Fraction) -> list[Fraction, ...]:
     return [Fraction(fraction.denominator, fraction.numerator) for fraction in fractions]
 
 
@@ -143,3 +142,40 @@ def get_overtones_undertones_above_fundamental(number_of_overtones):
             tone = get_octave_reduction(Fraction(overtone, undertone))
             all_tones.add(tone)
     return all_tones
+
+
+def get_dissonance_for_fractions(fractions: set[Fraction, ...]) -> Fraction:
+    # The dissonance of a set of fractions is the fraction of unique multiples to the fractions' lcm.
+    # e.g. fraction 1, 2/3 and 4/5 have lcm 4, with 4 + 6 + 5 - 2 unique multiples
+    # The dissonance is thus 'unique multiples'/'lcm' = 12/4 = 3
+    fractions_lcm = get_lcm_for_fractions(fractions)
+    all_multiples = set()
+    for fraction in fractions:
+        i = 1
+        fraction_multiple = fraction * i
+        while fraction_multiple <= fractions_lcm:
+            all_multiples.add(fraction_multiple)
+            i += 1
+            fraction_multiple = fraction * i
+    return Fraction(len(all_multiples), fractions_lcm)
+
+
+def get_consonance_for_fractions(fractions: set[Fraction, ...]) -> Fraction:
+    # The consonance of a set of fractions is the number of overlapping multiples per lcm.
+    # e.g. fraction 1, 2/3 and 4/5 have lcm 4, with 3 overlaps at 4 and 1 at 2
+    # The consonance is thus 1
+    fractions_lcm = get_lcm_for_fractions(fractions)
+    all_multiples = defaultdict(set)
+    for fraction in fractions:
+        i = 1
+        fraction_multiple = fraction * i
+        while fraction_multiple <= fractions_lcm:
+            all_multiples[fraction].add(fraction_multiple)
+            i += 1
+            fraction_multiple = fraction * i
+
+    overlaps = 0
+    for comb in combinations(all_multiples.values(), 2):
+        overlaps += len(comb[0] & comb[1])
+
+    return Fraction(overlaps, fractions_lcm)
