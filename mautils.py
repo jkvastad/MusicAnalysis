@@ -4,7 +4,6 @@ from fractions import Fraction
 from itertools import combinations, product, groupby
 from math import gcd, lcm
 from sympy.ntheory import factorint
-from toneplot import get_octave_reduction
 
 
 def get_closest_scientific_pitch(fraction):
@@ -109,6 +108,14 @@ def get_fractions_with_bases_up_to(fractions: set[Fraction, ...], max_base=5):
                 filtered_fractions.add(fraction)
 
     return filtered_fractions
+
+
+def get_octave_reduction(fraction, octave=2):
+    while fraction >= 1:
+        fraction = fraction / octave
+    while fraction < 1:
+        fraction = fraction * octave
+    return fraction
 
 
 def to_octave_reduced_fractions(fractions, octave_size=2):

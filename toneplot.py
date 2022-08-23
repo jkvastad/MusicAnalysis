@@ -22,14 +22,6 @@ def get_overtones_for_fractions(overtones: int = 0, *fractions: Fraction) -> set
     return {overtone for fraction in fractions for overtone in get_overtones_for_fraction(fraction, overtones)}
 
 
-def get_octave_reduction(fraction, octave=2):
-    while fraction >= 1:
-        fraction = fraction / octave
-    while fraction < 1:
-        fraction = fraction * octave
-    return fraction
-
-
 def get_octave_pair(fraction, octave=2):
     fraction = get_octave_reduction(fraction, octave)
     octave_pair = Fraction(fraction.denominator, fraction.numerator)
