@@ -131,9 +131,8 @@ def plot_undertones(fractions: list[Fraction], number_of_harmonics: list[int], m
         return
 
     fig, ax = plt.subplots(layout='constrained')
-    original_wavelengths = sorted([Fraction(fraction.denominator, fraction.numerator) for fraction in fractions],
-                                  reverse=True)
-    global_wavelength_lcm = get_lcm_for_fractions(*original_wavelengths)
+    original_wavelengths = {Fraction(fraction.denominator, fraction.numerator) for fraction in fractions}
+    global_wavelength_lcm = get_lcm_for_fractions(original_wavelengths)
     number_of_overtones = [harmonic - 1 for harmonic in number_of_harmonics]
 
     # init wavelengths_by_denominator

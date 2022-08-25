@@ -37,7 +37,7 @@ def get_lcm_for_combinations(fractions: set[Fraction, Fraction, ...]) -> list[Fr
     lcm_combinations = set()
     for i in range(2, len(fractions) + 1):
         for combination in combinations(fractions, r=i):
-            lcm_combinations.add(get_lcm_for_fractions(*combination))
+            lcm_combinations.add(get_lcm_for_fractions(set(combination)))
     return sorted(lcm_combinations)
 
 
