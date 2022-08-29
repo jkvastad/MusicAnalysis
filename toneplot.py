@@ -3,6 +3,9 @@ from matplotlib.patches import Rectangle
 from matplotlib.widgets import Slider, Button
 from mautils import *
 
+MAJOR_SCALE = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+MAJOR_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+
 
 def get_widths_by_fractions(unique_fractions):
     widths = [(unique_fractions[i + 1] - unique_fractions[i]) * 0.8 / 2 for i in range(len(unique_fractions) - 1)]
@@ -379,3 +382,17 @@ def print_major_chord_self_matches():
 def print_minor_chord_self_matches():
     minor = {Fraction(1), Fraction(5, 4), Fraction(3, 2)}
     print_chord_self_matches(minor)
+
+
+def get_major_scale_chords(min_chord_size=3, max_chord_size=7):
+    all_chords = []
+
+    for chord_size in range(min_chord_size, max_chord_size + 1):
+        index_combos = combinations(range(len(MAJOR_SCALE)), chord_size)
+        for index_combo in index_combos:
+            for index in index_combo:
+                if not MAJOR_SCALE[index]:
+                    break
+            else:
+                all_chords.append(index_combo)
+    return all_chords
