@@ -1,5 +1,5 @@
 import math
-from collections import defaultdict
+from collections import defaultdict, deque
 from fractions import Fraction
 from itertools import combinations, product, groupby
 from math import gcd, lcm
@@ -192,14 +192,31 @@ def get_consonance_for_fractions(fractions: set[Fraction, ...]) -> Fraction:
 
 
 def get_major_scale_chords(min_chord_size=3, max_chord_size=7):
-    all_chords = []
+    all_matching_chords = []
+    all_non_matching_chords = []
 
     for chord_size in range(min_chord_size, max_chord_size + 1):
         index_combos = combinations(range(len(MAJOR_SCALE)), chord_size)
         for index_combo in index_combos:
             for index in index_combo:
                 if not MAJOR_SCALE[index]:
+                    all_non_matching_chords.append(index_combo)
                     break
             else:
-                all_chords.append(index_combo)
-    return all_chords
+                all_matching_chords.append(index_combo)
+    return all_matching_chords, all_non_matching_chords
+
+
+def get_chord_matches(chord: tuple) -> tuple[str, ...]:
+    current_scale = deque(MAJOR_SCALE)
+    matches = []
+
+    for i in range(len(MAJOR_SCALE)):
+        for index in chord:
+            if not current_scale[index]:
+                break
+        else:
+            matches.append(MAJOR_SCALE_NAMES[i])
+        current_scale.rotate()
+
+    return tuple(matches)
