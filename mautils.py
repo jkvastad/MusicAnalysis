@@ -5,6 +5,9 @@ from itertools import combinations, product, groupby
 from math import gcd, lcm
 from sympy.ntheory import factorint
 
+MAJOR_SCALE = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+MAJOR_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+
 
 def get_closest_scientific_pitch(fraction):
     c_4 = 261.6256
@@ -186,3 +189,17 @@ def get_consonance_for_fractions(fractions: set[Fraction, ...]) -> Fraction:
         overlaps += len(comb[0] & comb[1])
 
     return Fraction(overlaps, fractions_lcm)
+
+
+def get_major_scale_chords(min_chord_size=3, max_chord_size=7):
+    all_chords = []
+
+    for chord_size in range(min_chord_size, max_chord_size + 1):
+        index_combos = combinations(range(len(MAJOR_SCALE)), chord_size)
+        for index_combo in index_combos:
+            for index in index_combo:
+                if not MAJOR_SCALE[index]:
+                    break
+            else:
+                all_chords.append(index_combo)
+    return all_chords
