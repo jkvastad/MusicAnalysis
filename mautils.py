@@ -124,14 +124,17 @@ def get_octave_reduction(fraction, octave=2):
 def to_octave_reduced_fractions(fractions, octave_size=2):
     reduced_fractions = set()
     for fraction in fractions:
-        while fraction > octave_size:
-            fraction /= octave_size
-        while fraction < octave_size:
-            fraction *= octave_size
-        fraction /= octave_size
-
-        reduced_fractions.add(fraction)
+        reduced_fractions.add(to_octave_reduced_fraction(fraction, octave_size))
     return reduced_fractions
+
+
+def to_octave_reduced_fraction(fraction, octave_size=2):
+    while fraction > octave_size:
+        fraction /= octave_size
+    while fraction < octave_size:
+        fraction *= octave_size
+    fraction /= octave_size
+    return fraction
 
 
 def generate_matching_chords(chord: set[Fraction, ...]) -> set[tuple[Fraction, ...], ...]:
