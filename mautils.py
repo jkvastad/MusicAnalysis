@@ -6,7 +6,7 @@ from math import gcd, lcm
 from sympy.ntheory import factorint
 
 MAJOR_SCALE = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
-MAJOR_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 
 def get_closest_scientific_pitch(fraction):
@@ -194,15 +194,15 @@ def get_consonance_for_fractions(fractions: set[Fraction, ...]) -> Fraction:
     return Fraction(overlaps, fractions_lcm)
 
 
-def get_major_scale_chords(min_chord_size=3, max_chord_size=7):
+def get_chords_in_scale(scale, min_chord_size=3, max_chord_size=7):
     all_matching_chords = []
     all_non_matching_chords = []
 
     for chord_size in range(min_chord_size, max_chord_size + 1):
-        index_combos = combinations(range(len(MAJOR_SCALE)), chord_size)
+        index_combos = combinations(range(len(scale)), chord_size)
         for index_combo in index_combos:
             for index in index_combo:
-                if not MAJOR_SCALE[index]:
+                if not scale[index]:
                     all_non_matching_chords.append(index_combo)
                     break
             else:
@@ -210,16 +210,16 @@ def get_major_scale_chords(min_chord_size=3, max_chord_size=7):
     return all_matching_chords, all_non_matching_chords
 
 
-def get_chord_matches(chord: tuple) -> tuple[str, ...]:
-    current_scale = deque(MAJOR_SCALE)
+def get_chord_matches(chord: tuple, scale: list[int, ...]) -> tuple[str, ...]:
+    current_scale = deque(scale)
     matches = []
 
-    for i in range(len(MAJOR_SCALE)):
+    for i in range(len(scale)):
         for index in chord:
             if not current_scale[index]:
                 break
         else:
-            matches.append(MAJOR_SCALE_NAMES[i])
+            matches.append(NOTE_NAMES[i])
         current_scale.rotate()
 
     return tuple(matches)
