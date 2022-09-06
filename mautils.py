@@ -6,6 +6,10 @@ from math import gcd, lcm
 from sympy.ntheory import factorint
 
 MAJOR_SCALE = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+HARMONIC_MINOR_SCALE = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]
+OCTACTONIC_SCALE = [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+MAJOR_SCALE_FRACTIONS = {Fraction(1), Fraction(9, 8), Fraction(5, 4), Fraction(4, 3), Fraction(3, 2), Fraction(5, 3),
+                         Fraction(15, 8)}
 NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 
