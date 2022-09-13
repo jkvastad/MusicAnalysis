@@ -12,6 +12,7 @@ class Scale(Enum):
     HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]
     HARMONIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]
     OCTACTONIC = [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+    BLUES = [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]
 
 
 MAJOR_SCALE_FRACTIONS = {Fraction(1), Fraction(9, 8), Fraction(5, 4), Fraction(4, 3), Fraction(3, 2), Fraction(5, 3),
@@ -19,13 +20,15 @@ MAJOR_SCALE_FRACTIONS = {Fraction(1), Fraction(9, 8), Fraction(5, 4), Fraction(4
 NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 
-def get_scale_name(scale_to_identify: list) -> list:
+def get_scale_name(scale_to_identify: list) -> (list, str):
     scale_to_identify = deque(scale_to_identify)
+    fundamental = 0
     for i in range(len(scale_to_identify)):
         for scale in Scale:
             if list(scale_to_identify) == scale.value:
-                return scale.name
+                return scale.name, NOTE_NAMES[fundamental]
         scale_to_identify.rotate()
+        fundamental -= 1
 
 
 def get_closest_scientific_pitch(fraction):
