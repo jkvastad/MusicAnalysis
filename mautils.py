@@ -233,6 +233,8 @@ def get_chords_in_scale(scale, min_chord_size=3, max_chord_size=7):
 
 
 def get_chord_matches(chord: tuple, scale: list[int, ...]) -> tuple[str, ...]:
+    # print(get_chord_matches((0,4,7),Scale.MAJOR.value))
+    # --> ('C', 'F', 'G')
     current_scale = deque(scale)
     matches = []
 
@@ -245,3 +247,22 @@ def get_chord_matches(chord: tuple, scale: list[int, ...]) -> tuple[str, ...]:
         current_scale.rotate()
 
     return tuple(matches)
+
+
+def get_chord_scales(chord: tuple):
+    """
+    scales = get_chord_scales((0, 4, 7))
+    for scale in scales:
+        print(scale)
+    -->('BLUES', 'C')
+    -->('BLUES', 'A')
+    -->('HARMONIC_MAJOR', 'G')
+    -->...
+    """
+    matches = []
+    for scale in Scale:
+        chord_matches = get_chord_matches((0, 3, 7), scale.value)
+        for match in chord_matches:
+            matches.append((scale.name, match))
+
+    return sorted(matches, key=lambda x: x[0])
