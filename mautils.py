@@ -11,7 +11,7 @@ class Scale(Enum):
     ARABIAN = [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]
     BLUES = [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]
     BYZANTINE = [1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1]
-    BLUES_EXTENDED = [1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]
+    BLUES_EXTENDED = [1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0]
     HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]
     HARMONIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]
     HARMONIC_MINOR_EXTENDED = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1]
