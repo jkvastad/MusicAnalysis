@@ -15,7 +15,7 @@ class Scale(Enum):
     HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]
     HARMONIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]
     HARMONIC_MINOR_EXTENDED = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1]
-    MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+    MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]  # C + F + G
     MELODIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]
     OCTACTONIC = [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 
@@ -26,6 +26,8 @@ NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 
 def identify_scale(scale_to_identify: list) -> (list, str):
+    # print(identify_scale([1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]))
+    # --> ('MAJOR', 'C')
     scale_to_identify = deque(scale_to_identify)
     fundamental = 0
     for i in range(len(scale_to_identify)):
@@ -34,6 +36,56 @@ def identify_scale(scale_to_identify: list) -> (list, str):
                 return scale.name, NOTE_NAMES[fundamental]
         scale_to_identify.rotate()
         fundamental -= 1
+
+
+def compare_scales_under_rotation(scale_1, scale_2) -> bool:
+    scale_1 = deque(scale_1)
+    scale_2 = deque(scale_2)
+    for i in range(len(scale_1)):
+        if scale_1 == scale_2:
+            return True
+        scale_1.rotate()
+    return False
+
+
+def get_all_12_tet_scales(scale_size: int, max_consecutive_notes: int) -> list[list[int, ...]]:
+    """
+    for my_scale in get_all_12_tet_scales(7, 3):
+        print(my_scale)
+    --> [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+    --> ...
+    """
+    all_scale_configurations = []
+    for prod in product([0, 1], repeat=11):
+        prod = deque([1]) + deque(prod)
+        all_scale_configurations.append(prod)
+
+    allowed_scales = []
+    for current_scale in all_scale_configurations:
+        if sum(current_scale) != scale_size:
+            continue
+
+        consecutive_notes = 0
+        for i in range(len(current_scale) + max_consecutive_notes):
+            if current_scale[0] == 1:
+                consecutive_notes += 1
+            else:
+                consecutive_notes = 0
+            if consecutive_notes > max_consecutive_notes:
+                break
+            current_scale.rotate()
+        else:
+            allowed_scales.append(current_scale)
+
+    unique_scales = []
+    for current_scale in allowed_scales:
+        for unique_scale in unique_scales:
+            if compare_scales_under_rotation(current_scale, unique_scale):
+                break
+        else:
+            unique_scales.append(list(current_scale))
+
+    return unique_scales
 
 
 def get_closest_scientific_pitch(fraction):
