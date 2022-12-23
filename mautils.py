@@ -318,7 +318,7 @@ def get_chord_scales(chord: tuple):
     """
     matches = []
     for scale in Scale:
-        chord_matches = get_chord_matches((0, 3, 7), scale.value)
+        chord_matches = get_chord_matches(chord, scale.value)
         for match in chord_matches:
             matches.append((scale.name, match))
 
