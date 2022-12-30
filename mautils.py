@@ -107,6 +107,22 @@ def get_closest_scientific_pitch(fraction):
         fraction_as_pitch / closest_pitch), smallest_diff / closest_pitch, smallest_diff
 
 
+def get_midi_pitches():
+    concert_pitch = 440
+    interval_ratio = 2 ** (1 / 12.0)
+    midi_pitches = []
+    current_pitch = concert_pitch
+    for i in range(1, 70):
+        current_pitch /= interval_ratio
+        midi_pitches.append(current_pitch)
+    current_pitch = concert_pitch
+    midi_pitches.sort()
+    for i in range(59):
+        midi_pitches.append(current_pitch)
+        current_pitch *= interval_ratio
+    return midi_pitches
+
+
 def get_lcm_for_fractions(fractions: set[Fraction, ...], ignore_zero=True) -> Fraction:
     if ignore_zero:
         fractions = [fraction for fraction in fractions if fraction != 0]
