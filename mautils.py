@@ -11,12 +11,12 @@ class Scale(Enum):
     ARABIAN = [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]
     BLUES = [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]
     BYZANTINE = [1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1]
-    BLUES_EXTENDED = [1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0]
-    HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]
-    HARMONIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]
+    BLUES_EXTENDED = [1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1]  # C Blues Major + G Blues Major
+    HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]  # C + Fm + G
+    HARMONIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]  # Cm + Fm + G
     HARMONIC_MINOR_EXTENDED = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1]
     MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]  # C + F + G
-    MELODIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+    MELODIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]  # Cm + F + G
     OCTACTONIC = [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 
 
