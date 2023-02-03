@@ -9,7 +9,7 @@ from enum import Enum
 
 class Scale(Enum):
     ARABIAN = [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]
-    BLUES = [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]
+    BLUES = [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]  # blues minor
     BYZANTINE = [1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1]
     BLUES_EXTENDED = [1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1]  # C Blues Major + G Blues Major
     HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]  # C + Fm + G
@@ -17,6 +17,8 @@ class Scale(Enum):
     HARMONIC_MINOR_EXTENDED = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1]
     MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]  # C + F + G
     MELODIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]  # Cm + F + G
+    PENTATONIC = [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]  # C Major
+    HEXATONIC = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]  # C Major
     OCTACTONIC = [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 
 
