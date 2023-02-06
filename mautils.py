@@ -11,7 +11,8 @@ class Scale(Enum):
     ARABIAN = [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]
     BLUES = [1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]  # blues minor
     BYZANTINE = [1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1]
-    BLUES_EXTENDED = [1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1]  # C Blues Major + G Blues Major
+    # BLUES_EXTENDED is more related to A# than C?
+    BLUES_EXTENDED = [1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0]
     HARMONIC_MAJOR = [1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]  # C + Fm + G
     HARMONIC_MINOR = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1]  # Cm + Fm + G
     HARMONIC_MINOR_EXTENDED = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1]
