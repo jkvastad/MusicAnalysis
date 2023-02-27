@@ -176,7 +176,7 @@ def fractions_to_frequencies(fractions, fundamental_tone=261.63):
     return [fundamental_tone * fraction for fraction in fractions]
 
 
-def make_keyboard_from_fractions(fractions, name="custom_fractions", fundamental_tone=261.63):
+def make_keyboard_from_fractions(fractions: set, name="custom_fractions", fundamental_tone=261.63):
     my_keyboard, first_midi_note = get_centered_keyboard(fractions)
     to_file(fractions_to_frequencies(my_keyboard, fundamental_tone=fundamental_tone), f"{name}.txt",
             first_midi_note=first_midi_note, path=JK_TUNINGS_PATH)

@@ -40,6 +40,38 @@ def identify_scale(scale_to_identify: list) -> (list, str):
         scale_to_identify.rotate()
         fundamental -= 1
 
+def parse_scales():
+    with open(r'D:\Projects\Code\MusicAnalysis\scale.txt', 'r') as file:
+        output = []
+
+        for line in file:
+            line = line.strip('\n').split(' ')
+            comment = ''
+
+            # ignore comments after //
+            for index, note in enumerate(line):
+                if '//' in note:
+                    comment = " ".join(line[index + 1:])
+                    line = line[:index]
+                    break
+
+            if len(line) == 0:
+                output.append((None, comment))
+                continue
+
+            # format 'b' to '#'
+            for index, note in enumerate(line):
+                if 'b' in note:
+                    line[index] = NOTE_NAMES[NOTE_NAMES.index(note[0]) - 1]
+
+            # create scale
+            scale = [0] * 12
+            for note in line:
+                if note in NOTE_NAMES:
+                    scale[NOTE_NAMES.index(note)] = 1
+
+            output.append((scale, comment))
+    return output
 
 def compare_scales_under_rotation(scale_1, scale_2) -> bool:
     scale_1 = deque(scale_1)

@@ -1,0 +1,10 @@
+// C and G undertones
+C G# F G D# C // C + G 2 undertones
+C G# F D G D# C // C 3 undertones G 2 undertones
+C G# F D G D# C A // C + G 3 undertones
+C G# F D G D# C A# // ???
+//
+A# D D# F G
+A# C D D# F G
+A# C D D# F G A
+A# C C# D# F G A

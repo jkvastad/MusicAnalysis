@@ -1,0 +1,45 @@
+// Spring Heeled Jack scales
+// Verse 1 - 7 measures
+A# C D D# F G A // 2 measures
+A# C D D# F G // 2 measure
+A# C D D# F G A // 0.5 measures
+A# C C# D# F F# G# // 0.5 measures
+A# C D D# F G G# // 1 measure
+A# C D D# F G A  // 1 measure
+// Chorus 1 - 7 measures
+A# C D D# F G A // 1 measure
+A# C D D# F# G A // 1 measure
+A# C D D# F G A // 1 measure
+A# C D D# F F# G# // 0.5 measures
+A# C D D# F F# A // 0.5 measures
+A# C D D# F F# A // 2 measures
+A# C D D# F G A // 1 measure
+// Verse 2 = Verse 1
+// Chorus 2 6 measures
+A# C D D# F G A // 1 measure
+A# C D D# F# G A // 1 measure
+A# C D D# F G A // 1 measure
+A# C D D# F F# G# // 0.5 measures
+A# C D D# F F# A // 0.5 measures
+A# C D D# F F# A // 2 measures
+// Bridge 8 measures
+A# C D D# F G A // 3 measures
+A# C D D# F# G A // 1 measure
+A# C D D# F G A // 0.5 measures
+A# C C# D# F F# G# // 0.5 measures
+A# C D D# F G A // 0.5 measures
+E F# G# B A C# D# // 0.5 measures
+A# C D D# F G A // 2 measures
+// Verse 3 = Verse 2
+// Chorus 3 - 7 measures
+A# C D D# F G A // 1 measure
+A# C D D# F# G A // 1 measure
+A# C D D# F G A // 1 measure
+A# C D D# F F# G# // 0.5 measures
+A# C D D# F F# A // 0.5 measures
+A# C D D# F F# A // 3 measures
+// Outro
+A# C D D# F G A // 4 measures
+A# C D D# F G A
+A# C C# D# F F# G#
+A# C D D# F G A
