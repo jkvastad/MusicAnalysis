@@ -1,0 +1,28 @@
+// Turrican 2 Intro Theme - 91.5bpm, resolution 8
+// Intro count in 1 measure
+Db Eb F Gb Ab Bb C // 1 measure, Db
+// Intro 6 measures
+Eb F G Ab Bb C D // 2 measures, Eb Eb
+Eb F Gb Ab Bb B Db // 3 measures, Abm, Ebm, Ebm
+Db Eb F Gb Ab Bb C // 1 measure, Ab
+// Verse 1 count in 1 measure
+Eb F G Ab Bb C D // 1 measure, Eb
+// Verse 1 4 measures
+Eb F Gb Ab Bb B Db // 1 measure, Ebm
+Eb F Gb Ab Bb B Db // 0.5 measure, Gb
+Db Eb F Gb Ab Bb C // 0.5 measure, Ab, Ebm
+Eb F Gb Ab Bb B Db // 1 measure, Ebm
+Eb F Gb Ab Bb B Db // 0.5 measure, Gb
+Db Eb F Gb Ab Bb C // 0.5 measure, Db, Ebm
+// Verse 2 8 measures
+Db Eb F Gb Ab Bb C // 2 measures, Ebm
+Eb F Gb Ab Bb B Db // 2 measures, B, Db
+Db Eb F Gb Ab Bb C // 2 measures, Ebm
+Eb F Gb Ab Bb B Db // 2 measures, B, Db
+
+// Sketchpad
+Db Eb F Gb Ab Bb B
+Db Eb F Gb Ab Bb C
+C D D# F G A A#
+C D E F G A A#
+A B C# D E F# G
