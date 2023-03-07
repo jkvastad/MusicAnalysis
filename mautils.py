@@ -82,7 +82,7 @@ def parse_scales(path):
     return output
 
 
-def compare_scales_under_rotation(scale_1, scale_2) -> bool:
+def equal_under_rotation(scale_1, scale_2) -> bool:
     scale_1 = deque(scale_1)
     scale_2 = deque(scale_2)
     for i in range(len(scale_1)):
@@ -109,27 +109,51 @@ def get_all_12_tet_scales(scale_size: int, max_consecutive_notes: int) -> list[l
         if sum(current_scale) != scale_size:
             continue
 
-        consecutive_notes = 0
-        for i in range(len(current_scale) + max_consecutive_notes):
-            if current_scale[0] == 1:
-                consecutive_notes += 1
-            else:
-                consecutive_notes = 0
-            if consecutive_notes > max_consecutive_notes:
-                break
-            current_scale.rotate()
+        if get_max_consecutive_notes(current_scale) > max_consecutive_notes:
+            continue
         else:
             allowed_scales.append(current_scale)
 
     unique_scales = []
     for current_scale in allowed_scales:
         for unique_scale in unique_scales:
-            if compare_scales_under_rotation(current_scale, unique_scale):
+            if equal_under_rotation(current_scale, unique_scale):
                 break
         else:
             unique_scales.append(list(current_scale))
 
     return unique_scales
+
+
+def get_number_of_semitone_intervals(notes):
+    """
+    notes = [1,0,1,1]
+    print(get_number_of_semitone_intervals(notes))
+    --> 2
+    """
+    semitone_intervals = 0
+    for i in range(len(notes)):
+        if notes[i] == notes[(i + 1) % len(notes)] == 1:
+            semitone_intervals += 1
+    return semitone_intervals
+
+
+def get_max_consecutive_notes(notes):
+    """
+    notes = [1,1,1,0,1]
+    print(get_max_consecutive_notes(notes))
+    --> 4
+    """
+    max_consecutive_notes = 0
+    current_consecutive_notes = 0
+    for i in range(2*len(notes)):
+        if notes[i%len(notes)] == 1:
+            current_consecutive_notes += 1
+            if current_consecutive_notes > max_consecutive_notes:
+                max_consecutive_notes = current_consecutive_notes
+        else:
+            current_consecutive_notes = 0
+    return max_consecutive_notes
 
 
 def get_closest_scientific_pitch(fraction):
@@ -199,16 +223,17 @@ def get_inverted_fractions(*fractions: Fraction) -> list[Fraction, ...]:
     return [Fraction(fraction.denominator, fraction.numerator) for fraction in fractions]
 
 
+# TODO return with chord[0] = 1, all scales distinct under rotation
 def get_all_12_tet_chords():
     # Chord defined as any set of octave reduced notes in root position which does not contain a semitone intervall
-    all_key_combinations = product((0, 1), repeat=10)
+    all_key_combinations = product((0, 1), repeat=9)
     relevant_key_combinations = []
     for comb in all_key_combinations:
         for i in range(len(comb) - 1):
             if comb[i] == comb[i + 1] == 1:
                 break
         else:
-            relevant_key_combinations.append((1, 0, *comb))
+            relevant_key_combinations.append((1, 0, *comb, 0))
 
     return relevant_key_combinations
 

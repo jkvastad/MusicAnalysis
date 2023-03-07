@@ -26,3 +26,8 @@ Db Eb F Gb Ab Bb C
 C D D# F G A A#
 C D E F G A A#
 A B C# D E F# G
+//
+A C D D# E G // A Blues
+A C D D# E F G  // A Blues with F
+A A# B C D# E F G  //??
+A# C D D# E G
