@@ -146,8 +146,8 @@ def get_max_consecutive_notes(notes):
     """
     max_consecutive_notes = 0
     current_consecutive_notes = 0
-    for i in range(2*len(notes)):
-        if notes[i%len(notes)] == 1:
+    for i in range(2 * len(notes)):
+        if notes[i % len(notes)] == 1:
             current_consecutive_notes += 1
             if current_consecutive_notes > max_consecutive_notes:
                 max_consecutive_notes = current_consecutive_notes
@@ -157,20 +157,20 @@ def get_max_consecutive_notes(notes):
 
 
 def get_closest_scientific_pitch(fraction):
-    c_4 = 261.6256
+    a_4 = 440.0
     twelve_tet_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
-    fraction_as_pitch = fraction * c_4
+    fraction_as_pitch = fraction * a_4
     smallest_diff = 100000
     name_number = '-'
-    for n in range(-48, 60):
-        scientific_pitch = c_4 * 2 ** (n / 12)
+    for n in range(-39, 69):
+        scientific_pitch = a_4 * 2 ** (n / 12)
         current_diff = abs(fraction_as_pitch - scientific_pitch)
         if current_diff < smallest_diff:
             smallest_diff = current_diff
             name_number = n
     pitch_name = twelve_tet_names[name_number % 12] + f'{4 + name_number // 12}'
-    closest_pitch = c_4 * 2 ** (name_number / 12)
+    closest_pitch = a_4 * 2 ** (name_number / 12)
     return fraction, pitch_name, 1200 * math.log2(
         fraction_as_pitch / closest_pitch), smallest_diff / closest_pitch, smallest_diff
 
