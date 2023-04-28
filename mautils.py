@@ -82,6 +82,39 @@ def parse_scales(path):
     return output
 
 
+def get_sensory_dissonance(frequency_series, beating_bandwidth=20.0):
+    """
+    takes a list of frequencies and calculates their sensory dissonance
+    :return: total number of dissonant intervals
+    """
+    # Todo: note which overtone clashes with which other overtone. Require input to be multiple series.
+    dissonances = []
+    for m in range(len(frequency_series)):
+        frequency_serie = frequency_series[m]
+        for frequency_index, frequency in enumerate(frequency_serie):
+            for n in range(m + 1, len(frequency_series)):
+                other_frequency_serie = frequency_series[n]
+                for other_frequency_index, other_frequency in enumerate(other_frequency_serie):
+                    interval = abs(frequency - other_frequency)
+                    if beating_bandwidth < interval < get_ERB(frequency):
+                        dissonances.append((frequency, other_frequency, frequency_index, other_frequency_index, m, n))
+    return dissonances
+
+
+def get_ERB(hz):
+    # https://en.wikipedia.org/wiki/Equivalent_rectangular_bandwidth
+    # returns ERB in hz
+    khz = hz / 1000.0
+    return 6.23 * khz * khz + 93.39 * khz + 28.53
+
+
+def get_harmonic_series(fundamentals, series_length):
+    all_series = []
+    for fundamental in fundamentals:
+        all_series.append([i * fundamental for i in range(1, series_length + 1)])
+    return all_series
+
+
 def equal_under_rotation(scale_1, scale_2) -> bool:
     scale_1 = deque(scale_1)
     scale_2 = deque(scale_2)

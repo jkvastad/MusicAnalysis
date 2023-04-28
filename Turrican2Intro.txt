@@ -21,13 +21,4 @@ Db Eb F Gb Ab Bb C // 2 measures, Ebm
 Eb F Gb Ab Bb B Db // 2 measures, B, Db
 
 // Sketchpad
-Db Eb F Gb Ab Bb B
-Db Eb F Gb Ab Bb C
-C D D# F G A A#
-C D E F G A A#
-A B C# D E F# G
-//
-A C D D# E G // A Blues
-A C D D# E F G  // A Blues with F
-A A# B C D# E F G  //??
-A# C D D# E G
+C Eb E F G A
