@@ -21,6 +21,9 @@ class Scale(Enum):
     PENTATONIC = [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]  # C Major
     HEXATONIC = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]  # C Major
     OCTACTONIC = [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+    # C Natural scale, based on dissonance curve minima for harmonic overtones.
+    # See the book "Tuning, Timbre, Spectrum, Scale".
+    NATURAL_SCALE = [1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0]
 
 
 MAJOR_SCALE_FRACTIONS = {Fraction(1), Fraction(9, 8), Fraction(5, 4), Fraction(4, 3), Fraction(3, 2), Fraction(5, 3),
@@ -87,17 +90,17 @@ def get_sensory_dissonance(frequency_series, beating_bandwidth=20.0):
     takes a list of frequencies and calculates their sensory dissonance
     :return: total number of dissonant intervals
     """
-    # Todo: note which overtone clashes with which other overtone. Require input to be multiple series.
     dissonances = []
-    for m in range(len(frequency_series)):
-        frequency_serie = frequency_series[m]
+    for frequency_serie_index in range(len(frequency_series)):
+        frequency_serie = frequency_series[frequency_serie_index]
         for frequency_index, frequency in enumerate(frequency_serie):
-            for n in range(m + 1, len(frequency_series)):
-                other_frequency_serie = frequency_series[n]
+            for other_frequency_serie_index in range(frequency_serie_index + 1, len(frequency_series)):
+                other_frequency_serie = frequency_series[other_frequency_serie_index]
                 for other_frequency_index, other_frequency in enumerate(other_frequency_serie):
-                    interval = abs(frequency - other_frequency)
-                    if beating_bandwidth < interval < get_ERB(frequency):
-                        dissonances.append((frequency, other_frequency, frequency_index, other_frequency_index, m, n))
+                    interval_abs = abs(frequency - other_frequency)
+                    if beating_bandwidth < interval_abs < get_ERB(frequency) - (beating_bandwidth / 2.0):
+                        dissonances.append((frequency, other_frequency, frequency_index, other_frequency_index,
+                                            frequency_serie_index, other_frequency_serie_index))
     return dissonances
 
 
@@ -241,13 +244,22 @@ def get_lcm_for_combinations(fractions: set[Fraction, Fraction, ...]) -> list[Fr
 
 
 def get_possible_lcm_configurations_for_fractions(*fractions: Fraction):
+    """
+    major_chord_C = [Fraction(1), Fraction(5, 4), Fraction(3, 2)]
+    for value in get_possible_lcm_configurations_for_fractions(*major_chord_C):
+        print(value)
+    -->
+    (Fraction(1, 1), Fraction(5, 4), Fraction(3, 2))
+    (Fraction(15, 1), Fraction(12, 1), Fraction(10, 1))
+    ({Fraction(1, 1), Fraction(5, 4), Fraction(3, 2)}, {Fraction(1, 1), Fraction(6, 5), Fraction(4, 5)}, {Fraction(1, 1), Fraction(2, 3), Fraction(5, 6)})
+    """
     fractions = sorted(set(fractions))
     lcm_configurations = []
     lcm_values = []
 
     for reference_fraction in fractions:
-        lcm_configurations.append([fraction / reference_fraction for fraction in fractions])
-        lcm_values.append(get_lcm_for_fractions(*lcm_configurations[-1]))
+        lcm_configurations.append({fraction / reference_fraction for fraction in fractions})
+        lcm_values.append(get_lcm_for_fractions(lcm_configurations[-1]))
 
     return tuple(fractions), tuple(lcm_values), tuple(lcm_configurations)
 
@@ -269,7 +281,6 @@ def get_all_12_tet_chords():
             relevant_key_combinations.append((1, 0, *comb, 0))
 
     return relevant_key_combinations
-
 
 def chord_to_fractions(chord):
     if len(chord) != 12:
