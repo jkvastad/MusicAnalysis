@@ -264,6 +264,35 @@ def get_possible_lcm_configurations_for_fractions(*fractions: Fraction):
     return tuple(fractions), tuple(lcm_values), tuple(lcm_configurations)
 
 
+def get_lcd_for_fractions(fractions: set[Fraction, ...], ignore_zero=True) -> Fraction:
+    if ignore_zero:
+        fractions = [fraction for fraction in fractions if fraction != 0]
+    fractions_gcd = gcd(*[fraction.numerator for fraction in fractions])
+    fractions_lcd = Fraction(lcm(*[fraction.denominator for fraction in fractions]), fractions_gcd)
+    return fractions_lcd
+
+
+def get_possible_lcd_configurations_for_fractions(*fractions: Fraction):
+    """
+    major_chord_C = [Fraction(1), Fraction(5, 4), Fraction(3, 2)]
+    for value in get_possible_lcd_configurations_for_fractions(*major_chord_C):
+        print(value)
+    -->
+    (Fraction(1, 1), Fraction(5, 4), Fraction(3, 2)) <-- original fractions
+    (Fraction(15, 1), Fraction(12, 1), Fraction(10, 1)) <-- LCD values for...
+    ({Fraction(1, 1), Fraction(5, 4), Fraction(3, 2)}, {Fraction(1, 1), Fraction(6, 5), Fraction(4, 5)}, {Fraction(1, 1), Fraction(2, 3), Fraction(5, 6)}) <-- ...the fraction permutations
+    """
+    fractions = sorted(set(fractions))
+    lcd_configurations = []
+    lcd_values = []
+
+    for reference_fraction in fractions:
+        lcd_configurations.append({fraction / reference_fraction for fraction in fractions})
+        lcd_values.append(get_lcd_for_fractions(lcd_configurations[-1]))
+
+    return tuple(fractions), tuple(lcd_values), tuple(lcd_configurations)
+
+
 def get_inverted_fractions(*fractions: Fraction) -> list[Fraction, ...]:
     return [Fraction(fraction.denominator, fraction.numerator) for fraction in fractions]
 
@@ -281,6 +310,7 @@ def get_all_12_tet_chords():
             relevant_key_combinations.append((1, 0, *comb, 0))
 
     return relevant_key_combinations
+
 
 def chord_to_fractions(chord):
     if len(chord) != 12:
